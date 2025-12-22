@@ -23,3 +23,4 @@ snapshot_*.jpg
 
 # uv cache
 .uv/
+.env
