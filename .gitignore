@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+reachy_mini_env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Snapshots from camera test
+snapshot_*.jpg
+
+# uv cache
+.uv/
