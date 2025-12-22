@@ -15,6 +15,7 @@ This repo is set up alongside the official [reachy_mini SDK](https://github.com/
     ├── .venv/          # Python virtual environment
     ├── hello.py        # Hardware test script
     ├── hello_vision.py # Camera test script
+    ├── self_intro.py   # 🎭 Theatrical self-introduction demo
     ├── pyproject.toml  # Project dependencies
     └── README.md       # This file
 ```
@@ -130,6 +131,36 @@ Opens a live camera feed. Press `q` to quit, `s` to save a snapshot.
 
 ```bash
 python hello_vision.py
+```
+
+### `self_intro.py` — 🎭 Theatrical Self-Introduction
+
+A lively demo where Reachy Mini introduces itself with speech and coordinated movements!
+
+**Features:**
+- Text-to-Speech using Microsoft Edge voices (edge-tts)
+- Coordinated movements synced with speech
+- Optional: AI vision that describes what the robot sees
+
+**Prerequisites:**
+- Install ffmpeg for audio conversion: `brew install ffmpeg` (macOS)
+
+```bash
+# Basic run (speech + movement only)
+python self_intro.py
+
+# 🏆 RECOMMENDED: Groq (FREE, fast, generous limits!)
+# Get your free key at: https://console.groq.com/keys
+export GROQ_API_KEY="your-key-here"
+python self_intro.py
+
+# Alternative: Google Gemini (free but rate-limited)
+export GEMINI_API_KEY="your-key-here"
+python self_intro.py
+
+# Or with OpenAI vision (paid, highest quality)
+export OPENAI_API_KEY="sk-your-key-here"
+python self_intro.py
 ```
 
 ---
