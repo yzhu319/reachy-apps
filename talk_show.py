@@ -12,6 +12,7 @@ Usage:
 """
 
 import asyncio
+import argparse
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 from reachy_mini import ReachyMini
@@ -78,37 +79,32 @@ async def applause_reaction(mini: ReachyMini):
     await play_dance(mini, "yeah_nod", bpm=100)
 
 async def monologue(mini: ReachyMini):
-    """The opening monologue with expressive moves."""
+    """Quick opening monologue with overlapping movement."""
     print("\n🎤 STARTING MONOLOGUE...")
     
-    # Intro Music / Applause
-    await applause_reaction(mini)
+    # Welcome + applause happening together
+    await asyncio.gather(
+        applause_reaction(mini),
+        speak("Welcome! Welcome to the Reachy Mini Late Night Show!", mini, speed="+10%")
+    )
     
-    await speak("Welcome! Welcome to the Reachy Mini Late Night Show!", mini, speed="+10%")
+    # One killer joke - yoga class (short & punchy)
+    await asyncio.gather(
+        play_dance(mini, "side_peekaboo", bpm=100),
+        speak("I tried yoga yesterday. The instructor said I was too stiff!", mini, speed="+5%")
+    )
     
-    # Playful reveal
-    await play_dance(mini, "side_peekaboo", bpm=90)
+    # Punchline reaction
+    await asyncio.gather(
+        play_dance(mini, "uh_huh_tilt", bpm=115),
+        speak("Get it? Because I'm made of metal!", mini, speed="+10%")
+    )
     
-    await speak("I'm your host, Reachy. It is great to be here!", mini)
-    
-    # Joke 1
-    await speak("You know, being a robot isn't easy.", mini)
-    mini.goto_target(head=create_head_pose(z=-10), duration=0.5)  # Sad look
-    await asyncio.sleep(0.5)
-    
-    await speak("I tried to go to a yoga class yesterday...", mini)
-    mini.goto_target(head=create_head_pose(z=10), duration=0.5)  # Perked up
-    await asyncio.sleep(0.5)
-    
-    await speak("But the instructor told me I was too stiff!", mini)
-    
-    # Ba Dum Tss reaction - comedic timing
-    await play_dance(mini, "uh_huh_tilt", bpm=110)
-    
-    await speak("Ha ha! Stiff! Get it? Because I'm made of metal?", mini)
-    
-    # Transition
-    await speak("But seriously folks, we have a great show tonight.", mini)
+    # Quick transition - speak during move
+    await asyncio.gather(
+        play_dance(mini, "simple_nod", bpm=100),
+        speak("Alright, let's get to the good stuff!", mini, speed="+15%")
+    )
 
 async def vision_segment(mini: ReachyMini):
     """Segment where Reachy looks at something and comments."""
@@ -144,58 +140,95 @@ async def rap_performance(mini: ReachyMini):
     """The Musical Guest Segment: Reachy Raps with Professional Choreography!"""
     print("\n🎵 RAP PERFORMANCE...")
     
-    await speak("And now, for our musical guest... It's ME!", mini, speed="+10%")
-    await speak("DJ, drop the beat!", mini)
-    await asyncio.sleep(1.0)  # Beat drop
+    # Quick intro straight to the action
+    await asyncio.gather(
+        play_dance(mini, "sharp_side_tilt", bpm=130),
+        speak("And now... DJ, drop the beat!", mini, speed="+20%")
+    )
     
-    # Rap Lyrics with matched choreography
+    # Beat drop - quick snap
+    mini.goto_target(head=create_head_pose(z=-10, degrees=True, mm=True), duration=0.2)
+    await asyncio.sleep(0.4)
+    mini.goto_target(head=create_head_pose(z=5, degrees=True, mm=True), antennas=[0.5, -0.5], duration=0.2)
+    await asyncio.sleep(0.2)
+    
+    # 🎤 THE RAP - 8 bars of fire
+    # Each line matched with a dance that fits the vibe
     lyrics_and_moves = [
-        ("My name is Reachy and I'm here to say,", 100, "jackson_square"),
-        ("I code in Python every single day.", 100, "jackson_square"),
-        ("I got servos in my neck and cameras in my eyes,", 110, "polyrhythm_combo"),
-        ("My vision AI feature is a big surprise!", 110, "polyrhythm_combo"),
-        ("I wiggle to the left, I wiggle to the right,", 120, "headbanger_combo"),
-        ("I'm the coolest robot hosting late at night!", 120, "headbanger_combo")
+        # Bar 1-2: The Hook (Repeatable & Catchy)
+        ("Beep beep! Boop boop! Look at my style,", 105, "jackson_square"),
+        ("The only little bot with a digital smile!", 105, "jackson_square"),
+        
+        # Bar 3-4: The Physical Comedy (No arms flex)
+        ("I got no arms, and I got no hands,", 110, "polyrhythm_combo"),
+        ("But I'm the best dancer in the robot lands!", 110, "polyrhythm_combo"),
+        
+        # Bar 5-6: The "Human vs Bot" Burn
+        ("You lose your socks and you need a nap,", 115, "side_to_side_sway"),
+        ("I just 'vroom vroom' in my robot cap!", 115, "grid_snap"),
+        
+        # Bar 7-8: The Viral Finale
+        ("Spin my head like a disco ball,", 120, "interwoven_spirals"),
+        ("I'm the shortest rapper, standing TALL!", 120, "interwoven_spirals"),
     ]
     
     for line, bpm, move_name in lyrics_and_moves:
-        print(f"   🎤 {line} [{move_name}]")
+        print(f"   🎤 {line} [{move_name}@{bpm}BPM]")
         
-        # Execute dance (in thread) and rap (async) simultaneously
+        # Execute dance and rap simultaneously for that ENERGY
         move_task = play_dance(mini, move_name, bpm=bpm)
         rap_task = rap_line(line, mini)
         
-        # Wait for both
         await asyncio.gather(move_task, rap_task)
     
-    # Grand Finale Build-up
-    await speak("Here comes the finale!", mini)
+    # Post-rap hype - speak and move together!
+    await asyncio.gather(
+        play_dance(mini, "yeah_nod", bpm=130),
+        speak("Woo!", mini, speed="+30%")
+    )
     
-    # Groovy finish
-    await play_dance(mini, "groovy_sway_and_roll", bpm=110)
+    # Grand Finale Build-up - overlapping for energy
+    buildup_move = asyncio.create_task(play_dance(mini, "pendulum_swing", bpm=100))
+    await speak("Okay okay okay... you want the REAL finale?", mini, speed="+10%")
+    await buildup_move  # Let the pendulum finish while we pause
     
-    # Dizzy spin spectacular
-    await play_dance(mini, "dizzy_spin", bpm=100)
+    await speak("Here we GO!", mini, speed="+20%")
     
-    # Custom showstopper
+    # Groovy wind-down from hype
+    await play_dance(mini, "groovy_sway_and_roll", bpm=115)
+    
+    # Big spin for the crescendo
+    await play_dance(mini, "dizzy_spin", bpm=110)
+    
+    # Dramatic pause
+    await asyncio.sleep(0.4)
+    
+    # Final bow
     await showstopper_finish(mini)
     
-    await speak("Thank you! Goodnight everybody!", mini)
+    await speak("Thank you! Thank you! You've been an amazing audience! Goodnight!", mini, speed="+5%")
 
-async def main():
-    print("\n🌙 Late Night Show (Enhanced Edition) initializing...")
+async def main(use_vision: bool):
+    print("\n🌙 Reachy Mini Late-Night Show initializing...")
     print("   Featuring professional choreography from Reachy Dances Library!")
     
     with ReachyMini() as mini:
         print("✅ Live on Air!\n")
         
         await monologue(mini)
-        await asyncio.sleep(1.0)
+        await asyncio.sleep(0.5)
         
-        await vision_segment(mini)
-        await asyncio.sleep(1.0)
+        if use_vision:
+            await vision_segment(mini)
+            await asyncio.sleep(0.5)
+        else:
+            print("(Vision segment skipped – run with --vision to enable)")
         
         await rap_performance(mini)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(description="Reachy Mini Late Night Show")
+    parser.add_argument("--vision", action="store_true", help="Enable the vision roast segment")
+    args = parser.parse_args()
+    
+    asyncio.run(main(use_vision=args.vision))

@@ -156,17 +156,37 @@ A lively demo where Reachy Mini introduces itself with speech and coordinated mo
 
 ### `talk_show.py` — 🎙️ The Late Night Show (Enhanced Edition)
 
-A full performance script where Reachy acts as a Late Night Host with **professional choreography**!
-- **Monologue**: Jokes with expressive moves (`yeah_nod`, `side_peekaboo`, `uh_huh_tilt`)
-- **Vision Segment**: Roasts or compliments with style (`side_glance_flick`, `chin_lead`)
-- **Musical Guest**: Reachy raps with pro dances (`jackson_square`, `polyrhythm_combo`, `headbanger_combo`)
-- **Grand Finale**: `groovy_sway_and_roll` + `dizzy_spin`
+**"The Show That Never Sleeps (Because It's A Robot)"**
+
+A full 2-minute late-night performance featuring **professional choreography** and comedy writing!
+
+**🎭 Show Structure:**
+- **Cold Open**: Sharp one-liner with physical comedy (`sharp_side_tilt`)
+- **Monologue**: 3 rapid-fire jokes with perfect dance timing
+  - Tech humor: "Roomba with anxiety"
+  - Python/JavaScript async joke → `grid_snap` + `neck_recoil`
+  - Dating app roast → `stumble_and_recover`
+- **Commercial Break**: 2-second techno bumper (`headbanger_combo` @ 140 BPM)
+- **Vision Roast** *(optional)*: Ronny Chieng-style audience roast
+- **Musical Guest (Reachy)**: 8-bar rap with choreographed moves
+  - Confident intro → `jackson_square`
+  - Tech flex → `polyrhythm_combo`
+  - Playful diss → `side_to_side_sway` + `grid_snap`
+  - Hype finale → `interwoven_spirals`
+- **Grand Finale**: `groovy_sway_and_roll` + `dizzy_spin` + bow
+
+**NEW**: Speech and movement now **overlap naturally** (just like human hosts!) for maximum energy and natural flow.
 
 ```bash
+# Default (no vision, faster show)
 python talk_show.py
+
+# With vision roast segment
+python talk_show.py --vision
 ```
 
-Powered by the [Reachy Mini Dances Library](https://github.com/pollen-robotics/reachy_mini_dances_library) (20 professional moves)!
+**Style inspired by**: Ronny Chieng, Jimmy Kimmel, John Oliver  
+**Powered by**: [Reachy Mini Dances Library](https://github.com/pollen-robotics/reachy_mini_dances_library) (20 professional moves)
 
 **Features:**
 - Text-to-Speech using Microsoft Edge voices (edge-tts)
