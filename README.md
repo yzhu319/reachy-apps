@@ -137,6 +137,17 @@ python hello_vision.py
 
 A lively demo where Reachy Mini introduces itself with speech and coordinated movements!
 
+### `talk_show.py` — 🎙️ The Late Night Show
+
+A full performance script where Reachy acts as a Late Night Host!
+- **Monologue**: Jokes and crowd interaction
+- **Vision Segment**: Roasts or compliments what it sees
+- **Musical Guest**: Reachy raps and dances to the beat
+
+```bash
+python talk_show.py
+```
+
 **Features:**
 - Text-to-Speech using Microsoft Edge voices (edge-tts)
 - Coordinated movements synced with speech
