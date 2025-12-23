@@ -115,15 +115,32 @@ python hello.py
 
 ---
 
+## 🎭 Professional Dance Integration
+
+This project integrates the [Reachy Mini Dances Library](https://github.com/pollen-robotics/reachy_mini_dances_library) — 20 pre-built professional dance moves including:
+
+| Category | Moves |
+|----------|-------|
+| **High Energy** | `jackson_square`, `headbanger_combo`, `polyrhythm_combo` |
+| **Smooth & Groovy** | `groovy_sway_and_roll`, `dizzy_spin`, `pendulum_swing` |
+| **Expressive** | `yeah_nod`, `uh_huh_tilt`, `side_peekaboo` |
+| **Quick & Sharp** | `side_glance_flick`, `grid_snap`, `sharp_side_tilt` |
+
+All moves are BPM-adjustable and perfectly choreographed for dramatic performances!
+
+---
+
 ## 🧪 Test Scripts
 
 ### `hello.py` — Full Hardware Test
 
-Tests antennas, head movement, torso rotation, and sound.
+Tests antennas, head movement, torso rotation, vision, sound, and features a **professional dance finale**!
 
 ```bash
 python hello.py
 ```
+
+**New**: Finale now includes `dizzy_spin` and `groovy_sway_and_roll` from the official dance library!
 
 ### `hello_vision.py` — Camera Test
 
@@ -137,16 +154,19 @@ python hello_vision.py
 
 A lively demo where Reachy Mini introduces itself with speech and coordinated movements!
 
-### `talk_show.py` — 🎙️ The Late Night Show
+### `talk_show.py` — 🎙️ The Late Night Show (Enhanced Edition)
 
-A full performance script where Reachy acts as a Late Night Host!
-- **Monologue**: Jokes and crowd interaction
-- **Vision Segment**: Roasts or compliments what it sees
-- **Musical Guest**: Reachy raps and dances to the beat
+A full performance script where Reachy acts as a Late Night Host with **professional choreography**!
+- **Monologue**: Jokes with expressive moves (`yeah_nod`, `side_peekaboo`, `uh_huh_tilt`)
+- **Vision Segment**: Roasts or compliments with style (`side_glance_flick`, `chin_lead`)
+- **Musical Guest**: Reachy raps with pro dances (`jackson_square`, `polyrhythm_combo`, `headbanger_combo`)
+- **Grand Finale**: `groovy_sway_and_roll` + `dizzy_spin`
 
 ```bash
 python talk_show.py
 ```
+
+Powered by the [Reachy Mini Dances Library](https://github.com/pollen-robotics/reachy_mini_dances_library) (20 professional moves)!
 
 **Features:**
 - Text-to-Speech using Microsoft Edge voices (edge-tts)

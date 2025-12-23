@@ -126,25 +126,63 @@ async def run_tests(mini: ReachyMini):
     except Exception as e:
         print(f"   ⚠️  Sound test skipped: {e}")
 
-    # --- Finale: Combined movement ---
-    print("🎉 Finale: Happy dance!")
+    # --- Finale: Professional Dance Showcase! ---
+    print("🎉 Finale: Professional dance showcase!")
     await speak("And now, for my signature move!", mini)
     await asyncio.sleep(0.3)
     
-    mini.goto_target(
-        head=create_head_pose(z=10, roll=15, degrees=True, mm=True),
-        antennas=[0.3, -0.3],
-        body_yaw=np.deg2rad(15),
-        duration=0.5
-    )
-    await asyncio.sleep(0.5)
-    mini.goto_target(
-        head=create_head_pose(z=10, roll=-15, degrees=True, mm=True),
-        antennas=[-0.3, 0.3],
-        body_yaw=np.deg2rad(-15),
-        duration=0.5
-    )
-    await asyncio.sleep(0.5)
+    # Use professional dance from the library
+    try:
+        from reachy_mini_dances_library import DanceMove
+        
+        def execute_dance(name, bpm):
+            """Execute a dance move by streaming positions at 100Hz."""
+            move = DanceMove(name)
+            move.default_bpm = bpm
+            
+            frequency = 100
+            period = 1.0 / frequency
+            duration = move.duration
+            start_time = time.time()
+            
+            while True:
+                current_time = time.time()
+                t = current_time - start_time
+                
+                if t >= duration:
+                    break
+                
+                head_pose, antennas, body_yaw = move.evaluate(t)
+                mini.set_target(head=head_pose, antennas=antennas, body_yaw=body_yaw)
+                
+                elapsed = time.time() - current_time
+                sleep_time = max(0, period - elapsed)
+                time.sleep(sleep_time)
+        
+        await speak("Watch this dizzy spin!", mini)
+        await asyncio.to_thread(execute_dance, "dizzy_spin", 100)
+        
+        await speak("And a groovy sway to finish!", mini)
+        await asyncio.to_thread(execute_dance, "groovy_sway_and_roll", 90)
+        
+    except Exception as e:
+        print(f"   ⚠️ Dance library not available, using simple moves: {e}")
+        # Fallback to simple moves
+        mini.goto_target(
+            head=create_head_pose(z=10, roll=15, degrees=True, mm=True),
+            antennas=[0.3, -0.3],
+            body_yaw=np.deg2rad(15),
+            duration=0.5
+        )
+        await asyncio.sleep(0.5)
+        mini.goto_target(
+            head=create_head_pose(z=10, roll=-15, degrees=True, mm=True),
+            antennas=[-0.3, 0.3],
+            body_yaw=np.deg2rad(-15),
+            duration=0.5
+        )
+        await asyncio.sleep(0.5)
+    
     # Reset to neutral
     mini.goto_target(
         head=create_head_pose(z=0, roll=0, degrees=True, mm=True),
