@@ -13,4 +13,7 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "pillow>=10.0.0",
     "reachy-mini-dances-library>=0.2.1",
+    "requests>=2.31.0",
+    "dashscope>=1.24.6",
+    "certifi>=2024.0.0",
 ]

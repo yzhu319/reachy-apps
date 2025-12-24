@@ -185,6 +185,13 @@ python talk_show.py
 python talk_show.py --vision
 ```
 
+**🎙️ Custom Voices (Optional):**
+The show automatically uses [Qwen3-TTS-VD-Flash](https://www.alibabacloud.com/help/en/model-studio/qwen-tts) custom voices if `QWEN_API_KEY` is set:
+- **Host Voice**: "A witty, energetic late-night talk show host with a smooth, charismatic voice"
+- **Rap Voice**: "A high-energy, rhythmic rapper with a bold, confident voice"
+
+Get your API key: https://www.alibabacloud.com/help/en/model-studio/get-api-key
+
 **Style inspired by**: Ronny Chieng, Jimmy Kimmel, John Oliver  
 **Powered by**: [Reachy Mini Dances Library](https://github.com/pollen-robotics/reachy_mini_dances_library) (20 professional moves)
 
@@ -195,6 +202,11 @@ python talk_show.py --vision
 
 **Prerequisites:**
 - Install ffmpeg for audio conversion: `brew install ffmpeg` (macOS)
+
+**Optional: Custom Qwen Voices** 🎙️
+- Set `QWEN_API_KEY` in `.env` for AI-generated custom voices
+- Creates unique host and rap voices from natural language descriptions
+- Falls back to edge-tts if API key not set
 
 ```bash
 # Basic run (speech + movement only)
@@ -274,6 +286,41 @@ When you're ready to share your app:
 4. Add `reachy-mini` to your `requirements.txt`
 
 Your app will then be installable from the Reachy Mini dashboard!
+
+---
+
+## 🔧 Troubleshooting
+
+### SSL Certificate Errors with Qwen TTS
+
+If you see `[SSL: CERTIFICATE_VERIFY_FAILED]` errors when using Qwen TTS:
+
+**Option 1: Install certificates (Recommended)**
+```bash
+cd ~/reachy-apps
+source .venv/bin/activate
+uv sync  # This will install certifi
+./fix_ssl_certs.sh  # Run the certificate fix script
+```
+
+**Option 2: Run Python's certificate installer**
+```bash
+# Find your Python version first
+python --version
+
+# Then run the installer (adjust version as needed)
+/Applications/Python\ 3.11/Install\ Certificates.command
+```
+
+**Option 3: Temporary workaround (Development only)**
+```bash
+# NOT recommended for production - disables SSL verification
+export QWEN_DISABLE_SSL_VERIFY=1
+python talk_show.py
+```
+
+**Option 4: Use edge-tts instead**
+If SSL issues persist, the system will automatically fall back to edge-tts, so your script will still work (just without custom voices).
 
 ---
 
