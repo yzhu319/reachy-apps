@@ -190,10 +190,59 @@ The show automatically uses [Qwen3-TTS-VD-Flash](https://www.alibabacloud.com/he
 - **Host Voice**: "A witty, energetic late-night talk show host with a smooth, charismatic voice"
 - **Rap Voice**: "A high-energy, rhythmic rapper with a bold, confident voice"
 
+**💰 Cost Optimization:**
+- **Voice Creation**: $0.20 per voice (one-time, cached in `voices/registry.json`)
+- **Speech Synthesis**: $0.13 per 10,000 characters (cached in `voices/audio_cache/`)
+- System automatically reuses existing voices and cached audio to minimize costs
+
 Get your API key: https://www.alibabacloud.com/help/en/model-studio/get-api-key
 
 **Style inspired by**: Ronny Chieng, Jimmy Kimmel, John Oliver  
 **Powered by**: [Reachy Mini Dances Library](https://github.com/pollen-robotics/reachy_mini_dances_library) (20 professional moves)
+
+### `crosstalk_performance_chinese.py` — 🤖 AI机器人自嘲相声 (AI Robot Self-Deprecating Crosstalk)
+
+A Chinese crosstalk (相声) performance featuring two AI robot characters with custom Qwen voices:
+
+**🎭 Characters:**
+- **机甲老郭** (Mecha Lao Guo): Mimicking Guo Degang's witty, fast-paced style with Beijing-Tianjin accent
+- **硅基老于** (Silicon-based Lao Yu): Mimicking Yu Qian's calm, deadpan "捧哏" (straight man) style
+
+**🎪 Performance:**
+- Self-deprecating humor about being a robot without arms
+- Classic crosstalk rhythm and timing
+- Coordinated movements matching the dialogue
+
+```bash
+# REQUIRES QWEN_API_KEY (no fallback)
+python crosstalk_performance_chinese.py
+```
+
+### `monologue_chinese.py` — 🛒 网络直播间带货 (Online Sales Livestream)
+
+A Chinese monologue performance featuring an energetic online salesperson:
+
+**🎭 Character:**
+- **网络主播** (Online Salesperson): Mimicking TV shopping host style with fast-paced, passionate, and exaggerated tone to create urgency and buying frenzy
+
+**🎪 Performance:**
+- High-energy sales pitch with urgency tactics
+- Fast-paced movements matching the energetic speech
+- Classic "直播间带货" style with price emphasis and scarcity tactics
+
+```bash
+# REQUIRES QWEN_API_KEY (no fallback)
+python monologue_chinese.py
+```
+
+**🎙️ Custom Chinese Voice:**
+Uses [Qwen3-TTS-VD-Flash](https://www.alibabacloud.com/help/en/model-studio/qwen-tts) to create:
+- **网络主播**: "模仿电视购物主持人，中年男性，声音洪亮有激情，语速极快..."
+
+**🎙️ Custom Chinese Voices:**
+Uses [Qwen3-TTS-VD-Flash](https://www.alibabacloud.com/help/en/model-studio/qwen-tts) to create:
+- **机甲老郭**: "模仿郭德纲音色。中年男性，声音清脆响亮，带有明显的京津口音..."
+- **硅基老于**: "模仿于谦音色。声音略显浑厚、低沉且富有磁性，语速稳健..."
 
 **Features:**
 - Text-to-Speech using Microsoft Edge voices (edge-tts)

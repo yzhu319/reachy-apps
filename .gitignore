@@ -24,3 +24,6 @@ snapshot_*.jpg
 # uv cache
 .uv/
 .env
+
+# Audio cache (can be regenerated, too large for git)
+voices/audio_cache/
