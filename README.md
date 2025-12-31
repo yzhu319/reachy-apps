@@ -16,6 +16,14 @@ This repo is set up alongside the official [reachy_mini SDK](https://github.com/
     ├── hello.py        # Hardware test script
     ├── hello_vision.py # Camera test script
     ├── self_intro.py   # 🎭 Theatrical self-introduction demo
+    ├── talk_show.py    # 🎙️ Late night show performance
+    ├── dance_party_dj.py # 🎵 Voice-controlled DJ with dancing
+    ├── utils/
+    │   ├── music.py           # YouTube download & playback
+    │   ├── beat_detection.py  # BPM/tempo detection
+    │   ├── beat_sync_dancer.py # Beat-synchronized dancing
+    │   ├── dj_tools.py        # Voice DJ tool definitions
+    │   └── voice_dj.py        # OpenAI Realtime voice control
     ├── pyproject.toml  # Project dependencies
     └── README.md       # This file
 ```
@@ -217,6 +225,48 @@ A Chinese crosstalk (相声) performance featuring two AI robot characters with 
 # REQUIRES QWEN_API_KEY (no fallback)
 python crosstalk_performance_chinese.py
 ```
+
+### `dance_party_dj.py` — 🎵 Dance Party DJ
+
+**Voice-controlled DJ that plays music from YouTube and makes Reachy dance to the beat!**
+
+**Features:**
+- Search and play songs from YouTube
+- Automatic beat detection using librosa
+- Beat-synchronized dancing with professional moves
+- Voice control using OpenAI Realtime API
+- Pause/resume music and dancing
+- Genre-based playlists (pop, rock, hip-hop, EDM, 80s, 90s, etc.)
+
+**Usage:**
+```bash
+# Play a specific song
+python dance_party_dj.py "Uptown Funk"
+
+# Play by URL
+python dance_party_dj.py --url "https://youtube.com/watch?v=..."
+
+# Interactive mode (keep asking for songs)
+python dance_party_dj.py --interactive
+
+# Voice-controlled mode (talk to DJ Reachy!)
+python dance_party_dj.py --voice
+```
+
+**Voice Commands (with --voice flag):**
+- "Play [song name]" - DJ confirms the song name before playing
+- "Play some disco music" - Plays from a genre
+- "Pause" / "Stop" - Pause or stop the music
+- "Resume" - Continue playing
+
+**Requirements:**
+- `ffmpeg` installed (`brew install ffmpeg` on macOS)
+- `OPENAI_API_KEY` environment variable (for voice mode)
+
+**Known Limitations:**
+- Voice commands during loud music playback may not be detected reliably (the music can drown out voice input). This is a known issue for future optimization.
+
+---
 
 ### `monologue_chinese.py` — 🛒 网络直播间带货 (Online Sales Livestream)
 

@@ -2478,7 +2478,9 @@ dependencies = [
     { name = "reachy-mini", extra = ["mujoco"] },
     { name = "reachy-mini-dances-library" },
     { name = "requests" },
+    { name = "scipy" },
     { name = "soundfile" },
+    { name = "websockets" },
     { name = "yt-dlp" },
 ]
 
@@ -2496,7 +2498,9 @@ requires-dist = [
     { name = "reachy-mini", extras = ["mujoco"], specifier = ">=1.2.4" },
     { name = "reachy-mini-dances-library", specifier = ">=0.2.1" },
     { name = "requests", specifier = ">=2.31.0" },
+    { name = "scipy", specifier = ">=1.11.0" },
     { name = "soundfile", specifier = ">=0.12.0" },
+    { name = "websockets", specifier = ">=12.0" },
     { name = "yt-dlp", specifier = ">=2024.0.0" },
 ]
 

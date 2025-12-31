@@ -8,11 +8,22 @@ Usage:
     python dance_party_dj.py "Uptown Funk"
     python dance_party_dj.py "Happy Pharrell Williams"
     python dance_party_dj.py --url "https://youtube.com/watch?v=..."
+    python dance_party_dj.py --voice  # Voice-controlled mode!
 
 Requirements:
     - ffmpeg must be installed (for audio conversion)
     - Internet connection (for YouTube downloads)
+    - OPENAI_API_KEY env variable (for voice mode)
 """
+
+# Fix SSL certificates on macOS (must be before other imports)
+import os
+try:
+    import certifi
+    os.environ['SSL_CERT_FILE'] = certifi.where()
+    os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+except ImportError:
+    pass
 
 import asyncio
 import argparse
@@ -119,15 +130,17 @@ async def play_song_with_dancing(
     print(f"   BPM: {beat_info.bpm:.0f}")
     print("   Press Ctrl+C to stop\n")
 
-    # Initialize dancer
+    # Get song duration first
+    song_duration = get_audio_duration(wav_path)
+
+    # Initialize dancer with actual song duration
     dancer = BeatSyncDancer(mini)
     playback_start = time.monotonic()
 
-    # Start dancer (schedules all moves)
-    dancer.start(beat_info, playback_start)
+    # Start dancer (schedules all moves for full song)
+    dancer.start(beat_info, playback_start, song_duration=song_duration)
 
     # Start audio playback
-    song_duration = get_audio_duration(wav_path)
     mini.media.play_sound(str(wav_path))
 
     # Wait for song to finish
@@ -162,10 +175,28 @@ async def interactive_mode(mini: ReachyMini):
         await play_song_with_dancing(mini, song_query=query)
 
 
+async def voice_mode(mini: ReachyMini):
+    """Voice-controlled DJ mode using OpenAI Realtime API."""
+    from utils.voice_dj import run_voice_dj
+
+    print("\n" + "=" * 50)
+    print("VOICE MODE - DJ Reachy is listening!")
+    print("=" * 50)
+    print("\nTry saying:")
+    print("  - 'Play Uptown Funk'")
+    print("  - 'Play some disco music'")
+    print("  - 'Stop the music'")
+    print("  - 'Play something from the 80s'")
+    print("\nPress Ctrl+C to exit\n")
+
+    await run_voice_dj(mini)
+
+
 async def main(
     song_query: str = None,
     song_url: str = None,
-    interactive: bool = False
+    interactive: bool = False,
+    voice: bool = False
 ):
     """Main entry point."""
     print("Dance Party DJ initializing...")
@@ -174,7 +205,9 @@ async def main(
     with ReachyMini() as mini:
         print("Reachy Mini connected!")
 
-        if interactive:
+        if voice:
+            await voice_mode(mini)
+        elif interactive:
             await interactive_mode(mini)
         elif song_query or song_url:
             await play_song_with_dancing(mini, song_query, song_url)
@@ -194,6 +227,7 @@ Examples:
     python dance_party_dj.py "Taylor Swift Shake It Off"
     python dance_party_dj.py --url "https://youtube.com/watch?v=..."
     python dance_party_dj.py --interactive
+    python dance_party_dj.py --voice   # Voice-controlled DJ mode!
         """
     )
     parser.add_argument(
@@ -210,6 +244,11 @@ Examples:
         action="store_true",
         help="Interactive mode - keep asking for songs"
     )
+    parser.add_argument(
+        "--voice", "-v",
+        action="store_true",
+        help="Voice-controlled mode using OpenAI Realtime API (requires OPENAI_API_KEY)"
+    )
 
     args = parser.parse_args()
 
@@ -217,7 +256,8 @@ Examples:
         asyncio.run(main(
             song_query=args.query,
             song_url=args.url,
-            interactive=args.interactive
+            interactive=args.interactive,
+            voice=args.voice
         ))
     except KeyboardInterrupt:
         print("\n\nDance party ended!")

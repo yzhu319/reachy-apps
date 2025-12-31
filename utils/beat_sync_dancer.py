@@ -48,6 +48,7 @@ class BeatSyncDancer:
     def __init__(self, mini: ReachyMini):
         self.mini = mini
         self._stop_event = threading.Event()
+        self._pause_event = threading.Event()  # For pause/resume
         self._worker_thread: Optional[threading.Thread] = None
 
         # Dance scheduling
@@ -59,21 +60,36 @@ class BeatSyncDancer:
         # Timing
         self._playback_start: float = 0
         self._beat_info: Optional[BeatInfo] = None
+        self._song_duration: float = 60.0  # Will be set from actual audio duration
 
         # Energy/style modifiers
         self._energy_multiplier: float = 1.0
 
-    def start(self, beat_info: BeatInfo, playback_start: float):
+        # Pause state
+        self._is_paused: bool = False
+
+    def start(self, beat_info: BeatInfo, playback_start: float, song_duration: float = None):
         """
         Start the dancer synchronized to music.
 
         Args:
             beat_info: BeatInfo from analyze_beats()
             playback_start: Monotonic time when music playback started
+            song_duration: Actual song duration in seconds (optional, uses beat times if not provided)
         """
         self._beat_info = beat_info
         self._playback_start = playback_start
         self._stop_event.clear()
+        self._pause_event.clear()
+        self._is_paused = False
+
+        # Use provided duration or fall back to beat times
+        if song_duration:
+            self._song_duration = song_duration
+        elif len(beat_info.beat_times) > 0:
+            self._song_duration = float(beat_info.beat_times[-1]) + 10.0  # Add buffer
+        else:
+            self._song_duration = 180.0  # Default 3 minutes
 
         # Schedule dances for the entire song
         self._schedule_dances()
@@ -85,6 +101,18 @@ class BeatSyncDancer:
             name="BeatSyncDancer"
         )
         self._worker_thread.start()
+
+    def pause(self):
+        """Pause dancing (music continues, robot holds position)."""
+        self._is_paused = True
+        self._pause_event.set()
+        print("[Dancer] Paused")
+
+    def resume(self):
+        """Resume dancing."""
+        self._is_paused = False
+        self._pause_event.clear()
+        print("[Dancer] Resumed")
 
     def stop(self):
         """Stop dancing and return to neutral position."""
@@ -109,7 +137,7 @@ class BeatSyncDancer:
 
         bpm = self._beat_info.bpm
         beat_interval = 60.0 / bpm
-        song_duration = float(self._beat_info.beat_times[-1]) if len(self._beat_info.beat_times) > 0 else 60.0
+        song_duration = self._song_duration
 
         current_time = 0.0
         recent_moves: List[str] = []
@@ -150,6 +178,11 @@ class BeatSyncDancer:
 
         while not self._stop_event.is_set():
             loop_start = time.monotonic()
+
+            # Skip if paused
+            if self._is_paused:
+                time.sleep(period)
+                continue
 
             # Check for new dance events
             if self._current_dance is None:
