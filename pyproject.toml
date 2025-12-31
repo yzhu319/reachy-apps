@@ -16,4 +16,7 @@ dependencies = [
     "requests>=2.31.0",
     "dashscope>=1.24.6",
     "certifi>=2024.0.0",
+    "yt-dlp>=2024.0.0",
+    "librosa>=0.10.0",
+    "soundfile>=0.12.0",
 ]

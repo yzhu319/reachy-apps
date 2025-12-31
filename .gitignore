@@ -27,3 +27,4 @@ snapshot_*.jpg
 
 # Audio cache (can be regenerated, too large for git)
 voices/audio_cache/
+audio_cache/
